@@ -19,7 +19,8 @@ use Predis\Connection\ConnectionException;
  * @coversNothing
  */
 class RedisTest extends AbstractTestCase {
-    public function setUp(): void {
+
+    public static function setUpBeforeClass(): void {
         // loop and try to connect as the
         // sandbox can take a bit to start up
         $tries = 5;
@@ -37,8 +38,6 @@ class RedisTest extends AbstractTestCase {
             if ($x < $tries) {
                 fwrite(STDERR, "Waiting for Redis to start (try $x)...\n");
                 sleep(5);
-            } else {
-                $this->assertTrue($success);
             }
         }
     }

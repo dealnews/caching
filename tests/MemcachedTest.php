@@ -17,10 +17,14 @@ use DealNews\Caching\Memcached;
  * @coversNothing
  */
 class MemcachedTest extends AbstractTestCase {
+
     public function setUp(): void {
         if (!class_exists('\\Memcached')) {
             $this->markTestSkipped('This test relies on pecl-memcached');
         }
+    }
+
+    public static function setUpBeforeClass(): void {
 
         // loop and try to connect as the
         // sandbox can take a bit to start up
@@ -34,8 +38,6 @@ class MemcachedTest extends AbstractTestCase {
             if ($x < $tries) {
                 fwrite(STDERR, "Waiting for Memcached to start (try $x)...\n");
                 sleep(5);
-            } else {
-                $this->assertTrue($success);
             }
         }
     }
