@@ -22,7 +22,7 @@ class RedisTest extends AbstractTestCase {
     public function setUp(): void {
         // loop and try to connect as the
         // sandbox can take a bit to start up
-        $tries = 20;
+        $tries = 5;
         for ($x = 1; $x <= $tries; ++$x) {
             try {
                 $object = new Redis('test');
@@ -35,7 +35,7 @@ class RedisTest extends AbstractTestCase {
                 break;
             }
             if ($x < $tries) {
-                fwrite(STDERR, "Waiting for Redis to start...\n");
+                fwrite(STDERR, "Waiting for Redis to start (try $x)...\n");
                 sleep(5);
             } else {
                 $this->assertTrue($success);

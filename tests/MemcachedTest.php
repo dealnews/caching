@@ -24,7 +24,7 @@ class MemcachedTest extends AbstractTestCase {
 
         // loop and try to connect as the
         // sandbox can take a bit to start up
-        $tries = 20;
+        $tries = 5;
         for ($x = 1; $x <= $tries; ++$x) {
             $object = new Memcached('test');
             $success = $object->set('setup_test', 1);
@@ -32,7 +32,7 @@ class MemcachedTest extends AbstractTestCase {
                 break;
             }
             if ($x < $tries) {
-                fwrite(STDERR, "Waiting for Memcached to start...\n");
+                fwrite(STDERR, "Waiting for Memcached to start (try $x)...\n");
                 sleep(5);
             } else {
                 $this->assertTrue($success);
