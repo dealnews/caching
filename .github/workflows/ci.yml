@@ -1,0 +1,49 @@
+name: Testing DealNews\DataMapper
+
+on: [push]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-versions: ['8.0', '8.1', '8.2']
+        include:
+          - operating-system: 'ubuntu-latest'
+            php-versions: '8.0'
+            phpunit-versions: 9
+
+    # Service containers to run with `container-job`
+    services:
+
+      # Label used to access the service container
+      memcached-sandbox:
+        # Docker Hub image
+        image: memcached:latest
+
+      # Label used to access the service container
+      redis-sandbox:
+        # Docker Hub image
+        image: redis:7.2
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Composer Install
+      uses: php-actions/composer@v6
+      with:
+        php_version: ${{ matrix.php-versions }}
+
+    - name: PHPUnit tests
+      uses: php-actions/phpunit@v3
+      with:
+        php_extensions: "pcov yaml"
+        version: "9.6"
+        php_version: ${{ matrix.php-versions }}
+
+    - name: Run Phan
+      uses: k1LoW/phan-action@v0

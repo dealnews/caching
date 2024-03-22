@@ -1,0 +1,6 @@
+#!/bin/bash
+
+docker run -d -p 6379:6379 \
+    --name redis-sandbox \
+    --network dealnews \
+    redis:7.2
