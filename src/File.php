@@ -30,7 +30,7 @@ class File implements CacheInterface {
     public function __construct(string $cluster) {
         $this->dir = sys_get_temp_dir()."/caching/{$cluster}";
         if (!file_exists($this->dir)) {
-            mkdir($this->dir, 0o775, TRUE);
+            mkdir($this->dir, 0775, TRUE);
         }
     }
 

@@ -18,12 +18,6 @@ use DealNews\Caching\Memcached;
  */
 class MemcachedTest extends AbstractTestCase {
 
-    public function setUp(): void {
-        if (!class_exists('\\Memcached')) {
-            $this->markTestSkipped('This test relies on pecl-memcached');
-        }
-    }
-
     public static function setUpBeforeClass(): void {
 
         // loop and try to connect as the
