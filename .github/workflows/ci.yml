@@ -19,14 +19,14 @@ jobs:
     services:
 
       # Label used to access the service container
-      memcached-sandbox:
+      memcached:
         # Docker Hub image
         image: memcached:latest
         ports:
           - 11211:11211
 
       # Label used to access the service container
-      redis-sandbox:
+      redis:
         # Docker Hub image
         image: redis:7.2
         # Set health checks to wait until redis has started

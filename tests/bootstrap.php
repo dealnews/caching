@@ -27,11 +27,11 @@ function _debug() {
 // Check if we are running inside a docker container already
 // If so, set the env vars correctly and don't run setup/teardown
 if ('' == shell_exec('which docker')) {
-    $memcache_host = 'memcached-sandbox';
-    $redis_host = 'redis-sandbox';
+    $memcache_host = 'memcached';
+    $redis_host    = 'redis';
 } else {
     $memcache_host = '127.0.0.1';
-    $redis_host = '127.0.0.1';
+    $redis_host    = '127.0.0.1';
 
     $start_sandbox = true;
 
