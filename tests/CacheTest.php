@@ -34,7 +34,7 @@ class CacheTest extends TestCase {
      * @param null|mixed $exception
      * @param null|mixed $code
      */
-    public function testFactory($expect, $type, $servers = NULL, $cluster = 'test', $exception = NULL, $code = NULL) {
+    public function testFactory($expect, $type, $servers = null, $cluster = 'test', $exception = null, $code = null) {
         if (!empty($exception)) {
             $this->expectException($exception);
             $this->expectExceptionCode($code);
@@ -89,7 +89,7 @@ class CacheTest extends TestCase {
             'Bad Cluster' => [
                 File::class,
                 '',
-                NULL,
+                null,
                 'foo',
                 \LogicException::class,
                 1,
@@ -98,7 +98,7 @@ class CacheTest extends TestCase {
             'Bad Type' => [
                 File::class,
                 'asdf',
-                NULL,
+                null,
                 'test',
                 \LogicException::class,
                 2,

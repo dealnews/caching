@@ -18,7 +18,7 @@ function _debug() {
     fwrite(STDERR, "###########\n");
     $args = func_get_args();
     foreach ($args as $arg) {
-        fwrite(STDERR, trim(var_export($arg, TRUE))."\n");
+        fwrite(STDERR, trim(var_export($arg, true))."\n");
     }
     fwrite(STDERR, "###########\n");
     fwrite(STDERR, "END DEBUG\n\n");
@@ -33,13 +33,13 @@ if ('' == shell_exec('which docker')) {
     $memcache_host = '127.0.0.1';
     $redis_host = '127.0.0.1';
 
-    $start_sandbox = TRUE;
+    $start_sandbox = true;
 
     $opts = getopt('', ['group:']);
     if (!empty($opts['group'])) {
         $groups = explode(',', $opts['group']);
         if (!in_array('functional', $groups)) {
-            $start_sandbox = FALSE;
+            $start_sandbox = false;
         }
     }
 

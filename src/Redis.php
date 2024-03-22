@@ -30,7 +30,7 @@ class Redis implements CacheInterface {
      *                        is something stored in an ini file or an
      *                        environment variable.
      */
-    public function __construct(string $cluster, ?GetConfig $config = NULL) {
+    public function __construct(string $cluster, ?GetConfig $config = null) {
         $this->config = $config ?? GetConfig::init();
 
         $servers = $this->getServerList($cluster);
@@ -50,7 +50,7 @@ class Redis implements CacheInterface {
         }
 
         foreach ($servers as $server) {
-            if (FALSE === strpos($server, '://')) {
+            if (false === strpos($server, '://')) {
                 $server = "tcp://{$server}";
             }
 
@@ -210,7 +210,7 @@ class Redis implements CacheInterface {
      */
     protected function getOptions(string $cluster): array {
         $options = [
-            'exceptions' => FALSE,
+            'exceptions' => false,
         ];
 
         $possible_options = [
@@ -226,7 +226,7 @@ class Redis implements CacheInterface {
 
         foreach ($possible_options as $opt) {
             $value = $this->config->get("caching.redis.{$cluster}.{$opt}");
-            if (NULL !== $value) {
+            if (null !== $value) {
                 if ('password' === $opt || 'username' === $opt) {
                     $options['parameters'][$opt] = $value;
                 } else {

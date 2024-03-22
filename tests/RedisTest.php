@@ -29,14 +29,13 @@ class RedisTest extends AbstractTestCase {
                 $object = new Redis('test');
                 $success = $object->set('setup_test', 1);
             } catch (ConnectionException $e) {
-                _debug($e->getMessage());
-                $success = FALSE;
+                $success = false;
             }
             if ($success) {
                 break;
             }
             if ($x < $tries) {
-                fwrite(STDERR, "Waiting for Redis to start (try $x)...\n");
+                fwrite(STDERR, "Waiting for Redis to start (try {$x})...\n");
                 sleep(5);
             }
         }
@@ -64,7 +63,7 @@ class RedisTest extends AbstractTestCase {
 
         $this->assertEquals(
             [
-                'exceptions' => FALSE,
+                'exceptions' => false,
                 'prefix' => 'bar',
                 'replication' => 'sentinel',
                 'parameters' => [

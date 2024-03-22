@@ -30,7 +30,7 @@ class MemcachedTest extends AbstractTestCase {
                 break;
             }
             if ($x < $tries) {
-                fwrite(STDERR, "Waiting for Memcached to start (try $x)...\n");
+                fwrite(STDERR, "Waiting for Memcached to start (try {$x})...\n");
                 sleep(5);
             }
         }

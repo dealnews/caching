@@ -32,7 +32,7 @@ class Cache {
      *
      * @throws \LogicException Thrown when the cache type is invalid
      */
-    public static function factory(string $cluster, ?GetConfig $config = NULL): CacheInterface {
+    public static function factory(string $cluster, ?GetConfig $config = null): CacheInterface {
         $config ??= GetConfig::init();
         $type = $config->get("caching.cache.{$cluster}.type");
 

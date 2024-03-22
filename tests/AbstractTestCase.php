@@ -54,7 +54,7 @@ abstract class AbstractTestCase extends TestCase {
 
         $object->delete($key);
         $this->assertEquals(
-            FALSE,
+            false,
             $object->get($key)
         );
 
@@ -80,7 +80,7 @@ abstract class AbstractTestCase extends TestCase {
         $result = $object->set($key, $key);
 
         $this->assertEquals(
-            TRUE,
+            true,
             $result
         );
 

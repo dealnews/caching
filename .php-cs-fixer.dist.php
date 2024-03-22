@@ -17,8 +17,9 @@ return (new PhpCsFixer\Config())
             'functions_opening_brace' => 'same_line',
         ],
         'constant_case' => [
-            'case' => 'upper'
+            'case' => 'lower'
         ],
+        'lowercase_keywords' => true,
         'no_extra_blank_lines' => [
             'tokens' => [
                 'extra',
