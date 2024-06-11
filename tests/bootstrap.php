@@ -24,6 +24,26 @@ function _debug() {
     fwrite(STDERR, "END DEBUG\n\n");
 }
 
+$run_functional = true;
+
+$opts = getopt('', ['group:', 'exclude-group:']);
+
+if (!empty($opts['exclude-group'])) {
+    $groups = explode(',', $opts['group']);
+    if (in_array('functional', $groups)) {
+        $run_functional = false;
+    }
+}
+
+if ($run_functional && !empty($opts['group'])) {
+    $groups = explode(',', $opts['group']);
+    if (!in_array('functional', $groups)) {
+        $run_functional = false;
+    }
+}
+
+define('RUN_FUNCTIONAL', $run_functional);
+
 // Check if we are running inside a docker container already
 // If so, set the env vars correctly and don't run setup/teardown
 if ('' == shell_exec('which docker')) {
@@ -33,17 +53,7 @@ if ('' == shell_exec('which docker')) {
     $memcache_host = '127.0.0.1';
     $redis_host    = '127.0.0.1';
 
-    $start_sandbox = true;
-
-    $opts = getopt('', ['group:']);
-    if (!empty($opts['group'])) {
-        $groups = explode(',', $opts['group']);
-        if (!in_array('functional', $groups)) {
-            $start_sandbox = false;
-        }
-    }
-
-    if ($start_sandbox) {
+    if (RUN_FUNCTIONAL) {
         // Start daemons for testing.
         passthru(__DIR__.'/setup.sh');
 

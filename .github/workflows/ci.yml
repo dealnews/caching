@@ -55,6 +55,7 @@ jobs:
         php_extensions: "pcov yaml memcached"
         version: "9.6"
         php_version: ${{ matrix.php-versions }}
+        group: unit
 
     - name: Run Phan
       uses: k1LoW/phan-action@v0

@@ -13,9 +13,7 @@ use DealNews\Caching\CacheInterface;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTestCase extends TestCase {
-    /**
-     * @group unit
-     */
+
     protected function interfaceTest(CacheInterface $object) {
         $key = 'testing_'.uniqid();
         $var = rand(1, 100);
