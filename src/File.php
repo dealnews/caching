@@ -30,7 +30,7 @@ class File implements CacheInterface {
     public function __construct(string $cluster) {
         $this->dir = sys_get_temp_dir()."/caching/{$cluster}";
         if (!file_exists($this->dir)) {
-            mkdir($this->dir, 0o775, TRUE);
+            mkdir($this->dir, 0775, true);
         }
     }
 
@@ -61,10 +61,10 @@ class File implements CacheInterface {
      * @param int    $expire Expiration in seconds from now or unix timestamp
      */
     public function add(string $key, $var, int $expire = 0): bool {
-        $return = FALSE;
+        $return = false;
 
         $value = $this->get($key);
-        if (FALSE === $value) {
+        if (false === $value) {
             $return = $this->set($key, $var, $expire);
         }
 
@@ -79,10 +79,10 @@ class File implements CacheInterface {
      * @param int    $expire Expiration in seconds from now or unix timestamp
      */
     public function replace(string $key, $var, int $expire = 0): bool {
-        $return = FALSE;
+        $return = false;
 
         $value = $this->get($key);
-        if (FALSE !== $value) {
+        if (false !== $value) {
             $return = $this->set($key, $var, $expire);
         }
 
@@ -107,7 +107,7 @@ class File implements CacheInterface {
         $key = $this->fixKey($key);
         $success = file_put_contents($this->dir.'/'.$key, serialize($struct));
 
-        return FALSE !== $success;
+        return false !== $success;
     }
 
     /**
@@ -172,7 +172,7 @@ class File implements CacheInterface {
             unlink($this->dir.'/'.$key);
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -210,7 +210,7 @@ class File implements CacheInterface {
      */
     protected function realGet(string $key) {
         $key = $this->fixKey($key);
-        $value = FALSE;
+        $value = false;
         if (file_exists($this->dir.'/'.$key)) {
             $struct = unserialize(file_get_contents($this->dir.'/'.$key));
             if (

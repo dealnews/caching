@@ -18,32 +18,42 @@ function _debug() {
     fwrite(STDERR, "###########\n");
     $args = func_get_args();
     foreach ($args as $arg) {
-        fwrite(STDERR, trim(var_export($arg, TRUE))."\n");
+        fwrite(STDERR, trim(var_export($arg, true))."\n");
     }
     fwrite(STDERR, "###########\n");
     fwrite(STDERR, "END DEBUG\n\n");
 }
 
+$run_functional = true;
+
+$opts = getopt('', ['group:', 'exclude-group:']);
+
+if (!empty($opts['exclude-group'])) {
+    $groups = explode(',', $opts['group']);
+    if (in_array('functional', $groups)) {
+        $run_functional = false;
+    }
+}
+
+if ($run_functional && !empty($opts['group'])) {
+    $groups = explode(',', $opts['group']);
+    if (!in_array('functional', $groups)) {
+        $run_functional = false;
+    }
+}
+
+define('RUN_FUNCTIONAL', $run_functional);
+
 // Check if we are running inside a docker container already
 // If so, set the env vars correctly and don't run setup/teardown
 if ('' == shell_exec('which docker')) {
-    $memcache_host = 'memcached-sandbox';
-    $redis_host = 'redis-sandbox';
+    $memcache_host = 'memcached';
+    $redis_host    = 'redis';
 } else {
     $memcache_host = '127.0.0.1';
-    $redis_host = '127.0.0.1';
+    $redis_host    = '127.0.0.1';
 
-    $start_sandbox = TRUE;
-
-    $opts = getopt('', ['group:']);
-    if (!empty($opts['group'])) {
-        $groups = explode(',', $opts['group']);
-        if (!in_array('functional', $groups)) {
-            $start_sandbox = FALSE;
-        }
-    }
-
-    if ($start_sandbox) {
+    if (RUN_FUNCTIONAL) {
         // Start daemons for testing.
         passthru(__DIR__.'/setup.sh');
 

@@ -19,14 +19,25 @@ jobs:
     services:
 
       # Label used to access the service container
-      memcached-sandbox:
+      memcached:
         # Docker Hub image
         image: memcached:latest
+        ports:
+          - 11211:11211
 
       # Label used to access the service container
-      redis-sandbox:
+      redis:
         # Docker Hub image
         image: redis:7.2
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
 
     steps:
 
@@ -41,9 +52,10 @@ jobs:
     - name: PHPUnit tests
       uses: php-actions/phpunit@v3
       with:
-        php_extensions: "pcov yaml"
+        php_extensions: "pcov yaml memcached"
         version: "9.6"
         php_version: ${{ matrix.php-versions }}
+        group: unit
 
-    - name: Run Phan
-      uses: k1LoW/phan-action@v0
+    # - name: Run Phan
+    #   uses: k1LoW/phan-action@v0

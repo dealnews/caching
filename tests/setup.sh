@@ -27,8 +27,6 @@ function run_container() {
             echo "Starting $NAME"
             docker start $NAME
         fi
-        echo "Waiting for $NAME sandbox to start"
-        sleep 10
     fi
 }
 

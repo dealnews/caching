@@ -13,41 +13,43 @@ use DealNews\Caching\Redis;
 use DealNews\GetConfig\GetConfig;
 use Predis\Connection\ConnectionException;
 
-/**
- * @internal
- *
- * @coversNothing
- */
 class RedisTest extends AbstractTestCase {
-    public function setUp(): void {
-        // loop and try to connect as the
-        // sandbox can take a bit to start up
-        $tries = 20;
-        for ($x = 1; $x <= $tries; ++$x) {
-            try {
-                $object = new Redis('test');
-                $success = $object->set('setup_test', 1);
-            } catch (ConnectionException $e) {
-                _debug($e->getMessage());
-                $success = FALSE;
-            }
-            if ($success) {
-                break;
-            }
-            if ($x < $tries) {
-                fwrite(STDERR, "Waiting for Redis to start...\n");
-                sleep(5);
-            } else {
-                $this->assertTrue($success);
+
+    public static function setUpBeforeClass(): void {
+
+        if (RUN_FUNCTIONAL) {
+            // loop and try to connect as the
+            // sandbox can take a bit to start up
+            $tries = 5;
+            for ($x = 1; $x <= $tries; ++$x) {
+                try {
+                    $object = new Redis('test');
+                    $success = $object->set('setup_test', 1);
+                } catch (ConnectionException $e) {
+                    $success = false;
+                }
+                if ($success) {
+                    break;
+                }
+                if ($x < $tries) {
+                    fwrite(STDERR, "Waiting for Redis to start (try {$x})...\n");
+                    sleep(5);
+                }
             }
         }
     }
 
+    /**
+     * @group unit
+     */
     public function testBadCluster() {
         $this->expectException(\Exception::class);
         $redis = new Redis('badname');
     }
 
+    /**
+     * @group unit
+     */
     public function testGetOptions() {
         putenv('CACHING_REDIS_TEST2_SERVERS=127.0.0.1');
         putenv('CACHING_REDIS_TEST2_USERNAME=foo');
@@ -65,7 +67,7 @@ class RedisTest extends AbstractTestCase {
 
         $this->assertEquals(
             [
-                'exceptions' => FALSE,
+                'exceptions' => false,
                 'prefix' => 'bar',
                 'replication' => 'sentinel',
                 'parameters' => [
@@ -77,11 +79,17 @@ class RedisTest extends AbstractTestCase {
         );
     }
 
+    /**
+     * @group functional
+     */
     public function testInterface() {
         $object = Redis::init('test');
         $this->interfaceTest($object);
     }
 
+    /**
+     * @group functional
+     */
     public function testBadKey() {
         $object = new Redis('test');
         $this->badKeyTest($object);

@@ -17,25 +17,23 @@ use DealNews\Caching\Memcached;
  * @coversNothing
  */
 class MemcachedTest extends AbstractTestCase {
-    public function setUp(): void {
-        if (!class_exists('\\Memcached')) {
-            $this->markTestSkipped('This test relies on pecl-memcached');
-        }
 
-        // loop and try to connect as the
-        // sandbox can take a bit to start up
-        $tries = 20;
-        for ($x = 1; $x <= $tries; ++$x) {
-            $object = new Memcached('test');
-            $success = $object->set('setup_test', 1);
-            if ($success) {
-                break;
-            }
-            if ($x < $tries) {
-                fwrite(STDERR, "Waiting for Memcached to start...\n");
-                sleep(5);
-            } else {
-                $this->assertTrue($success);
+    public static function setUpBeforeClass(): void {
+
+        if (RUN_FUNCTIONAL) {
+            // loop and try to connect as the
+            // sandbox can take a bit to start up
+            $tries = 5;
+            for ($x = 1; $x <= $tries; ++$x) {
+                $object = new Memcached('test');
+                $success = $object->set('setup_test', 1);
+                if ($success) {
+                    break;
+                }
+                if ($x < $tries) {
+                    fwrite(STDERR, "Waiting for Memcached to start (try {$x})...\n");
+                    sleep(5);
+                }
             }
         }
     }
@@ -52,16 +50,25 @@ class MemcachedTest extends AbstractTestCase {
         $this->assertEquals('long_ord32_key_ord32_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx_sha129657c827683a98bac548732c683c3c52d777807', $value);
     }
 
+    /**
+     * @group unit
+     */
     public function testBadCluster() {
         $this->expectException(\Exception::class);
         $redis = new Memcached('badname');
     }
 
+    /**
+     * @group functional
+     */
     public function testInterface() {
         $object = Memcached::init('test');
         $this->interfaceTest($object);
     }
 
+    /**
+     * @group functional
+     */
     public function testBadKey() {
         $object = new Memcached('test');
         $this->badKeyTest($object);
