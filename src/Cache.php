@@ -20,7 +20,7 @@ class Cache {
     protected const TYPE_MAP = [
         // File as intentionally left out of this list
         'memcache' => Memcached::class,
-        'redis' => Redis::class,
+        'redis'    => Redis::class,
     ];
 
     /**
@@ -34,7 +34,7 @@ class Cache {
      */
     public static function factory(string $cluster, ?GetConfig $config = null): CacheInterface {
         $config ??= GetConfig::init();
-        $type = $config->get("caching.cache.{$cluster}.type");
+        $type   = $config->get("caching.cache.{$cluster}.type");
 
         if (empty($type)) {
             // @phan-suppress-next-line PhanUnusedVariableValueOfForeachWithKey

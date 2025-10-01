@@ -14,19 +14,17 @@ use DealNews\Caching\File;
 use DealNews\Caching\Memcached;
 use DealNews\Caching\Redis;
 use DealNews\GetConfig\GetConfig;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversNothing]
 class CacheTest extends TestCase {
     /**
-     * @group unit
-     *
-     * @dataProvider factoryData
-     *
      * @param mixed      $expect
      * @param mixed      $type
      * @param null|mixed $servers
@@ -34,6 +32,8 @@ class CacheTest extends TestCase {
      * @param null|mixed $exception
      * @param null|mixed $code
      */
+    #[Group('unit')]
+    #[DataProvider('factoryData')]
     public function testFactory($expect, $type, $servers = null, $cluster = 'test', $exception = null, $code = null) {
         if (!empty($exception)) {
             $this->expectException($exception);
@@ -60,7 +60,7 @@ class CacheTest extends TestCase {
         }
     }
 
-    public function factoryData() {
+    public static function factoryData() {
         return [
             'Memcache with Type Set' => [
                 Memcached::class,

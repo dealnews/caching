@@ -10,10 +10,10 @@
 namespace DealNews\Caching\Tests;
 
 use DealNews\Caching\Memcached;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
- *
  * @coversNothing
  */
 class MemcachedTest extends AbstractTestCase {
@@ -38,9 +38,7 @@ class MemcachedTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * @group unit
-     */
+    #[Group('unit')]
     public function testKeyFix() {
         $cache = Memcached::init('test');
         $value = $cache->fixKey('badkey'.chr(32));
@@ -50,25 +48,19 @@ class MemcachedTest extends AbstractTestCase {
         $this->assertEquals('long_ord32_key_ord32_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx_sha129657c827683a98bac548732c683c3c52d777807', $value);
     }
 
-    /**
-     * @group unit
-     */
+    #[Group('unit')]
     public function testBadCluster() {
         $this->expectException(\Exception::class);
         $redis = new Memcached('badname');
     }
 
-    /**
-     * @group functional
-     */
+    #[Group('functional')]
     public function testInterface() {
         $object = Memcached::init('test');
         $this->interfaceTest($object);
     }
 
-    /**
-     * @group functional
-     */
+    #[Group('functional')]
     public function testBadKey() {
         $object = new Memcached('test');
         $this->badKeyTest($object);

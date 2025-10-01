@@ -28,7 +28,7 @@ class File implements CacheInterface {
      *                        environment variable.
      */
     public function __construct(string $cluster) {
-        $this->dir = sys_get_temp_dir()."/caching/{$cluster}";
+        $this->dir = sys_get_temp_dir() . "/caching/{$cluster}";
         if (!file_exists($this->dir)) {
             mkdir($this->dir, 0775, true);
         }
@@ -56,9 +56,9 @@ class File implements CacheInterface {
     /**
      * Adds a key and value if it does not exist.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function add(string $key, $var, int $expire = 0): bool {
         $return = false;
@@ -74,9 +74,9 @@ class File implements CacheInterface {
     /**
      * Replace a key and value if the key exists.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function replace(string $key, $var, int $expire = 0): bool {
         $return = false;
@@ -92,20 +92,20 @@ class File implements CacheInterface {
     /**
      * Sets a key and value.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function set(string $key, $var, int $expire = 0): bool {
         if (0 !== $expire && $expire < 86500 * 30) {
             $expire = time() + $expire;
         }
-        $struct = [
-            'value' => $var,
+        $struct  = [
+            'value'   => $var,
             'expires' => $expire,
         ];
-        $key = $this->fixKey($key);
-        $success = file_put_contents($this->dir.'/'.$key, serialize($struct));
+        $key     = $this->fixKey($key);
+        $success = file_put_contents($this->dir . '/' . $key, serialize($struct));
 
         return false !== $success;
     }
@@ -113,14 +113,14 @@ class File implements CacheInterface {
     /**
      * Increments a value by $value.
      *
-     * @param string $key   Key to use
-     * @param int    $value Value to increment by
+     * @param string $key Key to use
+     * @param int $value Value to increment by
      *
      * @return int New value
      */
     public function increment(string $key, int $value = 1): int {
-        $current_value = (int) $this->get($key);
-        $new_value = $current_value + $value;
+        $current_value = (int)$this->get($key);
+        $new_value     = $current_value + $value;
         if ($this->set($key, $new_value)) {
             $current_value = $new_value;
         }
@@ -131,8 +131,8 @@ class File implements CacheInterface {
     /**
      * Decrements a value by $value.
      *
-     * @param string $key   Key to use
-     * @param int    $value Value to decrement by
+     * @param string $key Key to use
+     * @param int $value Value to decrement by
      *
      * @return int New value
      */
@@ -168,8 +168,8 @@ class File implements CacheInterface {
      */
     public function delete(string $key): bool {
         $key = $this->fixKey($key);
-        if (file_exists($this->dir.'/'.$key)) {
-            unlink($this->dir.'/'.$key);
+        if (file_exists($this->dir . '/' . $key)) {
+            unlink($this->dir . '/' . $key);
         }
 
         return true;
@@ -194,8 +194,8 @@ class File implements CacheInterface {
         );
         // keep keys to a max of 100 characters
         if (strlen($new_key) > 100) {
-            $sha1 = sha1(substr($new_key, 55));
-            $new_key = substr($new_key, 0, 55).'_sha1'.$sha1;
+            $sha1    = sha1(substr($new_key, 55));
+            $new_key = substr($new_key, 0, 55) . '_sha1' . $sha1;
         }
 
         return $new_key;
@@ -209,10 +209,10 @@ class File implements CacheInterface {
      * @return mixed
      */
     protected function realGet(string $key) {
-        $key = $this->fixKey($key);
+        $key   = $this->fixKey($key);
         $value = false;
-        if (file_exists($this->dir.'/'.$key)) {
-            $struct = unserialize(file_get_contents($this->dir.'/'.$key));
+        if (file_exists($this->dir . '/' . $key)) {
+            $struct = unserialize(file_get_contents($this->dir . '/' . $key));
             if (
                 is_array($struct)
                 && isset($struct['value'], $struct['expires'])
@@ -223,7 +223,7 @@ class File implements CacheInterface {
             ) {
                 $value = $struct['value'];
             } else {
-                unlink($this->dir.'/'.$key);
+                unlink($this->dir . '/' . $key);
             }
         }
 

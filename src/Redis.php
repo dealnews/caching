@@ -46,15 +46,15 @@ class Redis implements CacheInterface {
             && 'sentinel' === $options['replication']
             && isset($options['parameters']['username'], $options['parameters']['password'])
         ) {
-            $auth_params = '?'.http_build_query($options['parameters']);
+            $auth_params = '?' . http_build_query($options['parameters']);
         }
 
         foreach ($servers as $server) {
-            if (false === strpos($server, '://')) {
+            if (!str_contains($server, '://')) {
                 $server = "tcp://{$server}";
             }
 
-            $parameters[] = $server.$auth_params;
+            $parameters[] = $server . $auth_params;
         }
 
         if (1 === count($parameters)) {
@@ -86,12 +86,12 @@ class Redis implements CacheInterface {
     /**
      * Adds a key and value if it does not exist.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function add(string $key, $var, int $expire = 0): bool {
-        $exists = (bool) $this->redis->exists($key);
+        $exists = (bool)$this->redis->exists($key);
         if (!$exists) {
             $exists = $this->set($key, $var, $expire);
         }
@@ -102,12 +102,12 @@ class Redis implements CacheInterface {
     /**
      * Replace a key and value if the key exists.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function replace(string $key, $var, int $expire = 0): bool {
-        $exists = (bool) $this->redis->exists($key);
+        $exists = (bool)$this->redis->exists($key);
         if ($exists) {
             $exists = $this->set($key, $var, $expire);
         }
@@ -118,9 +118,9 @@ class Redis implements CacheInterface {
     /**
      * Sets a key and value.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function set(string $key, $var, int $expire = 0): bool {
         if ($expire > 0) {
@@ -129,14 +129,14 @@ class Redis implements CacheInterface {
             $response = $this->redis->set($key, json_encode($var));
         }
 
-        return 'OK' === (string) $response;
+        return 'OK' === (string)$response;
     }
 
     /**
      * Increments a value by $value.
      *
-     * @param string $key   Key to use
-     * @param int    $value Value to increment by
+     * @param string $key Key to use
+     * @param int $value Value to increment by
      *
      * @return int New value
      */
@@ -147,8 +147,8 @@ class Redis implements CacheInterface {
     /**
      * Decrements a value by $value.
      *
-     * @param string $key   Key to use
-     * @param int    $value Value to decrement by
+     * @param string $key Key to use
+     * @param int $value Value to decrement by
      *
      * @return int New value
      */
@@ -183,7 +183,7 @@ class Redis implements CacheInterface {
      * @param string $key Key to use
      */
     public function delete(string $key): bool {
-        return (bool) $this->redis->del($key);
+        return (bool)$this->redis->del($key);
     }
 
     /**

@@ -11,8 +11,13 @@ namespace DealNews\Caching\Tests;
 
 use DealNews\Caching\Redis;
 use DealNews\GetConfig\GetConfig;
+use PHPUnit\Framework\Attributes\Group;
 use Predis\Connection\ConnectionException;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 class RedisTest extends AbstractTestCase {
 
     public static function setUpBeforeClass(): void {
@@ -39,17 +44,13 @@ class RedisTest extends AbstractTestCase {
         }
     }
 
-    /**
-     * @group unit
-     */
+    #[Group('unit')]
     public function testBadCluster() {
         $this->expectException(\Exception::class);
         $redis = new Redis('badname');
     }
 
-    /**
-     * @group unit
-     */
+    #[Group('unit')]
     public function testGetOptions() {
         putenv('CACHING_REDIS_TEST2_SERVERS=127.0.0.1');
         putenv('CACHING_REDIS_TEST2_USERNAME=foo');
@@ -79,17 +80,13 @@ class RedisTest extends AbstractTestCase {
         );
     }
 
-    /**
-     * @group functional
-     */
+    #[Group('functional')]
     public function testInterface() {
         $object = Redis::init('test');
         $this->interfaceTest($object);
     }
 
-    /**
-     * @group functional
-     */
+    #[Group('functional')]
     public function testBadKey() {
         $object = new Redis('test');
         $this->badKeyTest($object);
