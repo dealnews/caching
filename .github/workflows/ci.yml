@@ -1,4 +1,4 @@
-name: Testing DealNews\DataMapper
+name: Testing DealNews\Caching
 
 on: [push]
 
