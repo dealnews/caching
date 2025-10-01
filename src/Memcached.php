@@ -67,9 +67,9 @@ class Memcached implements CacheInterface {
     /**
      * Adds a key and value if it does not exist.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function add(string $key, $var, int $expire = 0): bool {
         $key = $this->fixKey($key);
@@ -80,9 +80,9 @@ class Memcached implements CacheInterface {
     /**
      * Replace a key and value if the key exists.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function replace(string $key, $var, int $expire = 0): bool {
         $key = $this->fixKey($key);
@@ -93,9 +93,9 @@ class Memcached implements CacheInterface {
     /**
      * Sets a key and value.
      *
-     * @param string $key    Key to use
-     * @param mixed  $var    Value to store
-     * @param int    $expire Expiration in seconds from now or unix timestamp
+     * @param string $key Key to use
+     * @param mixed $var Value to store
+     * @param int $expire Expiration in seconds from now or unix timestamp
      */
     public function set(string $key, $var, int $expire = 0): bool {
         $key = $this->fixKey($key);
@@ -106,8 +106,8 @@ class Memcached implements CacheInterface {
     /**
      * Increments a value by $value.
      *
-     * @param string $key   Key to use
-     * @param int    $value Value to increment by
+     * @param string $key Key to use
+     * @param int $value Value to increment by
      *
      * @return int New value
      */
@@ -120,8 +120,8 @@ class Memcached implements CacheInterface {
     /**
      * Decrements a value by $value.
      *
-     * @param string $key   Key to use
-     * @param int    $value Value to decrement by
+     * @param string $key Key to use
+     * @param int $value Value to decrement by
      *
      * @return int New value
      */
@@ -182,13 +182,13 @@ class Memcached implements CacheInterface {
         // replace non-visible ascii characters with the characters ordinal
         if (preg_match_all('#[^\x21-\x7E]#', $new_key, $matches)) {
             foreach ($matches[0] as $non_vis_char) {
-                $new_key = str_replace($non_vis_char, '_ord'.ord($non_vis_char).'_', $new_key);
+                $new_key = str_replace($non_vis_char, '_ord' . ord($non_vis_char) . '_', $new_key);
             }
         }
 
         if (strlen($new_key) > 250) {
-            $sha1 = sha1(substr($new_key, 205));
-            $new_key = substr($new_key, 0, 205).'_sha1'.$sha1;
+            $sha1    = sha1(substr($new_key, 205));
+            $new_key = substr($new_key, 0, 205) . '_sha1' . $sha1;
         }
 
         return $new_key;

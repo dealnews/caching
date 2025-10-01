@@ -10,16 +10,14 @@
 namespace DealNews\Caching\Tests;
 
 use DealNews\Caching\File;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * @internal
- *
  * @coversNothing
  */
+#[Group('unit')]
 class FileTest extends AbstractTestCase {
-    /**
-     * @group unit
-     */
     public function testInterface() {
         $object = File::init('app');
         $this->interfaceTest($object);
@@ -27,9 +25,6 @@ class FileTest extends AbstractTestCase {
         shell_exec("rm -rf {$dir}");
     }
 
-    /**
-     * @group unit
-     */
     public function testBadKey() {
         $object = new File('app');
         $this->badKeyTest($object);
