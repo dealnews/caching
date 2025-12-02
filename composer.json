@@ -10,7 +10,7 @@
   },
   "require": {
     "php": "^8.2",
-    "predis/predis": "^3.2",
+    "predis/predis": "^3.3",
     "dealnews/get-config": "^2.1"
   },
   "autoload": {
