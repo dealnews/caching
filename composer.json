@@ -11,7 +11,7 @@
   "require": {
     "php": "^8.2",
     "predis/predis": "^3.2",
-    "dealnews/get-config": "^2.1"
+    "dealnews/get-config": "^2.2"
   },
   "autoload": {
     "psr-4": {
