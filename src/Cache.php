@@ -18,7 +18,7 @@ class Cache {
      * @var        array
      */
     protected const TYPE_MAP = [
-        // File as intentionally left out of this list
+        'file'     => File::class,
         'memcache' => Memcached::class,
         'redis'    => Redis::class,
     ];
