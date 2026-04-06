@@ -6,7 +6,7 @@
   "require-dev": {
     "php-parallel-lint/php-parallel-lint": "^1.4",
     "phpunit/phpunit": "^11",
-    "friendsofphp/php-cs-fixer": "^3.90"
+    "friendsofphp/php-cs-fixer": "^3.94"
   },
   "require": {
     "php": "^8.2",
